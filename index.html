@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOGA WITH TUULA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    img  { display: block; max-width: 100%; }
+    a    { text-decoration: none; cursor: pointer; }
+
+    /* ── Base ───────────────────────────────────────────────────── */
+    body {
+      font-family: 'Libre Baskerville', Baskerville, "Baskerville Old Face", "Big Caslon", Georgia, serif;
+      background-color: #EDEAE0;
+      color: #2C1810;
+      letter-spacing: 0.04em;
+      line-height: 1.9;
+      overflow-x: hidden;
+    }
+
+    /* ── Shared headings ────────────────────────────────────────── */
+    .section-heading {
+      font-size: clamp(0.78rem, 1.3vw, 1rem);
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      font-style: italic;
+      font-weight: 400;
+      color: #4A1E08;
+      margin-bottom: 44px;
+    }
+    .section-heading.light   { color: #EDEAE0; }
+    .section-heading.centred { text-align: center; }
+
+    /* ── CTA button ─────────────────────────────────────────────── */
+    .cta {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      padding: 13px 34px;
+      border: 1px solid currentColor;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+    }
+    .cta.light { color: #EDEAE0; }
+    .cta.light:hover { background: #EDEAE0; color: #2C1810; }
+    .cta.dark  { color: #2C1810; }
+    .cta.dark:hover  { background: #2C1810; color: #EDEAE0; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FIXED NAV LOGO
+    ═══════════════════════════════════════════════════════════════ */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0;
+      padding: 18px 24px;
+      z-index: 900;
+    }
+    .logo-trigger {
+      background: none; border: none;
+      cursor: pointer;
+      width: 48px; height: 48px;
+      padding: 0;
+      transition: opacity 0.3s;
+    }
+    .logo-trigger:hover { opacity: 0.55; }
+    .logo-trigger img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* ── Nav overlay ────────────────────────────────────────────── */
+    .nav-overlay {
+      position: fixed; inset: 0;
+      background-color: rgba(237,234,224,0.97);
+      z-index: 950;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-overlay .ol-logo { width: 58px; margin-bottom: 40px; opacity: 0.5; }
+
+    .nav-overlay > ul { list-style: none; text-align: center; }
+    .nav-overlay > ul > li { margin: 13px 0; }
+    .nav-overlay > ul > li > a {
+      font-size: clamp(0.95rem, 2vw, 1.55rem);
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      font-style: italic;
+      color: #2C1810;
+      transition: color 0.25s, letter-spacing 0.25s;
+    }
+    .nav-overlay > ul > li > a:hover { color: #4A1E08; letter-spacing: 0.5em; }
+
+    /* ── Overlay submenu (Practice sub-sections) ─────────────────── */
+    .nav-overlay .has-sub { position: relative; }
+    .nav-overlay .submenu {
+      list-style: none;
+      max-height: 160px;
+      overflow: hidden;
+      opacity: 1;
+      text-align: center;
+    }
+    .nav-overlay .submenu li { margin: 7px 0; }
+    .nav-overlay .submenu li a {
+      font-size: clamp(0.7rem, 1.1vw, 0.92rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-style: italic;
+      color: #7A5840;
+      transition: color 0.2s;
+    }
+    .nav-overlay .submenu li a:hover { color: #4A1E08; }
+
+    .overlay-close {
+      position: absolute; top: 22px; right: 28px;
+      background: none; border: none;
+      font-size: 1.8rem; cursor: pointer;
+      color: #2C1810; font-family: inherit;
+      transition: opacity 0.2s;
+    }
+    .overlay-close:hover { opacity: 0.45; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HOME — compact hero
+    ═══════════════════════════════════════════════════════════════ */
+    #home {
+      background-color: #EDEAE0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 88px 60px 32px;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: clamp(1.5rem, 3.8vw, 3.6rem);
+      letter-spacing: 0.15em;
+      font-style: italic;
+      font-weight: 400;
+      color: #2C1810;
+      line-height: 1.15;
+    }
+    .hero-rule {
+      width: 1px; height: 38px;
+      background: #2C1810; opacity: 0.18;
+      margin: 34px auto 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TAB BAR — always visible, between hero and content
+    ═══════════════════════════════════════════════════════════════ */
+    .page-tabs {
+      background-color: #EDEAE0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px 30px;
+      padding: 16px 40px;
+      border-top: 1px solid rgba(44,24,16,0.12);
+      border-bottom: 1px solid rgba(44,24,16,0.12);
+      position: relative;
+      z-index: 100;
+    }
+    .tab {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      font-style: italic;
+      color: #7A5840;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tab:hover { color: #4A1E08; }
+    .tab.active { color: #4A1E08; border-bottom-color: #4A1E08; }
+
+    /* ── Practice With Me tab group + dropdown ───────────────────── */
+    .tab-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .tab-group::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -20px;
+      right: -20px;
+      height: 14px;
+    }
+    .tab-group:hover .tab-dropdown {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .tab-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #EDEAE0;
+      border: 1px solid rgba(44,24,16,0.14);
+      padding: 10px 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+      z-index: 600;
+      min-width: 170px;
+    }
+    .tab-dropdown a {
+      display: block;
+      padding: 8px 22px;
+      font-size: 0.64rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-style: italic;
+      color: #7A5840;
+      transition: color 0.2s, background 0.15s;
+    }
+    .tab-dropdown a:hover {
+      color: #4A1E08;
+      background: rgba(74,30,8,0.04);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       PANELS — only one shown at a time
+    ═══════════════════════════════════════════════════════════════ */
+    .panel { display: none; }
+    .panel.visible { display: block; }
+
+    /* ── Welcome / Mud image ────────────────────────────────────── */
+    .welcome-section { position: relative; width: 100%; }
+    .welcome-img {
+      width: 100%;
+      height: 42vw;
+      max-height: 520px;
+      object-fit: cover;
+      object-position: center 55%;
+      display: block;
+    }
+    .welcome-overlay {
+      position: absolute; inset: 0;
+      background: rgba(60,30,10,0.28);
+    }
+    .welcome-text {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6%;
+    }
+    .welcome-text p {
+      font-size: clamp(1.4rem, 2.8vw, 2.1rem);
+      color: #EDEAE0;
+      max-width: 640px;
+      line-height: 2.1;
+      font-style: italic;
+    }
+    .brand-word { letter-spacing: 0.12em; }
+
+    /* ── About ──────────────────────────────────────────────────── */
+    #about { background-color: #EDEAE0; padding: 100px 90px 110px; }
+    #about .section-heading { text-align: center; font-size: clamp(1.1rem, 2.2vw, 1.8rem); }
+    .about-body { display: flex; align-items: center; gap: 70px; }
+    .about-text { flex: 1; min-width: 0; }
+    .about-text p {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      color: #2C1810; line-height: 2.1; margin-bottom: 22px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-photo {
+      flex: 0 0 330px; height: 480px;
+      object-fit: cover; object-position: top center;
+    }
+
+    /* ── Practice With Me panel ─────────────────────────────────── */
+    #practice { padding: 0; }
+    .practice-header .section-heading {
+      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+    }
+    .practice-header {
+      background-color: #EDEAE0;
+      padding: 90px 90px 64px;
+      text-align: center;
+    }
+
+    /* Schedule sub-section */
+    #schedule {
+      position: relative;
+      padding: 88px 90px 96px;
+    }
+    #schedule .scene-bg {
+      position: absolute; inset: 0;
+      background-image: url('Sand.jpeg');
+      background-size: cover; background-position: center;
+    }
+    #schedule .scene-overlay {
+      position: absolute; inset: 0;
+      background-color: rgba(72,42,18,0.50);
+    }
+    #schedule .scene-content { position: relative; z-index: 1; }
+    #schedule .section-heading  { text-align: left; }
+    .schedule-intro {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      color: #EDEAE0;
+      max-width: 640px;
+      margin: 0 0 60px;
+      line-height: 2.1;
+      text-align: left;
+    }
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 26px;
+      margin-bottom: 60px;
+    }
+    .schedule-col {
+      border: 1px solid rgba(237,234,224,0.26);
+      padding: 36px 26px;
+      background: rgba(237,234,224,0.05);
+    }
+    .schedule-col h3 {
+      font-size: 0.76rem; letter-spacing: 0.42em;
+      text-transform: uppercase; font-style: italic; font-weight: 400;
+      color: #F2DCC8; margin-bottom: 26px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(242,220,200,0.26);
+    }
+    .class-slot { margin-bottom: 20px; }
+    .class-slot:last-child { margin-bottom: 0; }
+    .class-slot .time { font-size: 0.88rem; color: #EDEAE0; margin-bottom: 4px; }
+    .class-slot .venue { font-size: 0.82rem; color: #DDD0B8; line-height: 1.7; }
+    .class-slot .venue a {
+      color: #DDD0B8;
+      border-bottom: 1px solid rgba(221,208,184,0.4);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .class-slot .venue a:hover { color: #F2DCC8; border-color: #F2DCC8; }
+    .class-slot .zoom-note { font-size: 0.74rem; opacity: 0.48; font-style: italic; }
+    .class-slot .free-note { font-size: 0.74rem; color: #F2DCC8; font-style: italic; margin-top: 5px; }
+    #schedule .cta-wrap { text-align: left; }
+
+    /* Practice image cards */
+    .practice-card {
+      position: relative;
+      padding: 96px 90px;
+      min-height: 520px;
+      display: flex; align-items: center;
+    }
+    .practice-card .scene-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .practice-card .scene-overlay { position: absolute; inset: 0; }
+    .practice-card .card-body { position: relative; z-index: 1; max-width: 600px; }
+    .practice-card h3 {
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      letter-spacing: 0.38em; text-transform: uppercase;
+      font-style: italic; font-weight: 400;
+      color: #F2DCC8; margin-bottom: 24px;
+    }
+    .practice-card p {
+      font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+      color: #DDD0B8; line-height: 2.1; margin-bottom: 42px;
+    }
+
+    .card-corporate .scene-bg     { background-image: url('24_.png'); }
+    .card-corporate .scene-overlay { background-color: rgba(35,22,12,0.70); }
+
+    .card-one-to-one .scene-bg     { background-image: url('Rock.jpeg'); }
+    .card-one-to-one .scene-overlay { background-color: rgba(58,28,8,0.68); }
+
+    /* ── Coming soon panels ─────────────────────────────────────── */
+    .coming-soon-section {
+      position: relative; overflow: hidden;
+      min-height: calc(100vh - 200px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 60px 40px;
+    }
+    .coming-soon-section .scene-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .coming-soon-section .scene-overlay { position: absolute; inset: 0; }
+    .coming-soon-content { position: relative; z-index: 1; }
+    .coming-soon-section h2 {
+      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+      letter-spacing: 0.4em; font-style: italic; font-weight: 400;
+      color: #F2DCC8; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .soon-label {
+      font-size: 0.7rem; letter-spacing: 0.45em;
+      text-transform: uppercase; color: #DDD0B8; opacity: 0.85;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER — Mosaic + light cream overlay
+    ═══════════════════════════════════════════════════════════════ */
+    footer {
+      position: relative;
+      padding: 80px 60px 54px;
+    }
+    footer .scene-bg {
+      position: absolute; inset: 0;
+      background-image: url('Mosaic.jpeg');
+      background-size: cover; background-position: center;
+    }
+    footer .scene-overlay {
+      position: absolute; inset: 0;
+      background-color: rgba(237,234,224,0.87);
+    }
+    footer .footer-body {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 38px; text-align: center;
+    }
+    .footer-brand {
+      font-size: clamp(1.1rem, 2.5vw, 1.9rem);
+      letter-spacing: 0.2em; font-style: italic; font-weight: 400;
+      color: #2C1810;
+    }
+    .footer-nav {
+      display: flex; flex-wrap: wrap;
+      gap: 10px 30px; justify-content: center;
+    }
+    .footer-nav a {
+      font-size: 0.68rem; letter-spacing: 0.32em;
+      text-transform: uppercase; color: #5C3A20;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: #4A1E08; }
+    .footer-contact { font-size: 0.86rem; color: #5C3A20; }
+    .footer-contact a {
+      color: #5C3A20;
+      border-bottom: 1px solid rgba(92,58,32,0.32);
+      transition: color 0.2s;
+    }
+    .footer-contact a:hover { color: #4A1E08; }
+    .footer-copy {
+      font-size: 0.64rem; letter-spacing: 0.18em;
+      color: rgba(44,24,16,0.36);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 860px) {
+      #about { padding: 80px 32px; }
+      .about-body { flex-direction: column; gap: 40px; }
+      .about-photo { flex: unset; width: 100%; height: 320px; }
+      #schedule, .practice-header { padding-left: 32px; padding-right: 32px; }
+      .schedule-grid { grid-template-columns: repeat(2,1fr); }
+      .practice-card { padding: 70px 32px; min-height: 440px; }
+      footer { padding: 70px 32px 48px; }
+    }
+    @media (max-width: 600px) {
+      .page-tabs { gap: 8px 18px; padding: 14px 20px; }
+      .hero-title { letter-spacing: 0.1em; }
+      #home { padding-top: 80px; }
+      .schedule-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav overlay ──────────────────────────────────────────── -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="overlay-close" onclick="closeNav()">×</button>
+    <img src="mala_logo.svg" class="ol-logo" alt="">
+    <ul>
+      <li><a onclick="navTo('home')">Home</a></li>
+      <li><a onclick="navTo('about')">About</a></li>
+      <li class="has-sub">
+        <a onclick="navTo('practice')">Practice With Me</a>
+        <ul class="submenu">
+          <li><a onclick="navTo('schedule')">Class Schedule</a></li>
+          <li><a onclick="navTo('corporate')">Corporate</a></li>
+          <li><a onclick="navTo('one-to-one')">One to One</a></li>
+        </ul>
+      </li>
+      <li><a onclick="navTo('retreats')">Retreats</a></li>
+    </ul>
+  </div>
+
+  <!-- ── Fixed logo trigger ───────────────────────────────────── -->
+  <nav class="site-nav">
+    <button class="logo-trigger" onclick="openNav()" aria-label="Open navigation">
+      <img src="mala_logo.svg" alt="YOGA WITH TUULA — menu">
+    </button>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       HERO — always visible
+  ════════════════════════════════════════════════════════════════ -->
+  <section id="home">
+    <h1 class="hero-title">YOGA WITH TUULA</h1>
+    <div class="hero-rule"></div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       TAB BAR — always visible
+  ════════════════════════════════════════════════════════════════ -->
+  <nav class="page-tabs" id="pageTabs">
+    <a class="tab active" data-page="home"     onclick="showPage('home')">Home</a>
+    <a class="tab"        data-page="about"    onclick="showPage('about')">About</a>
+
+    <div class="tab-group">
+      <a class="tab" data-page="practice" onclick="showPage('practice')">Practice With Me</a>
+      <div class="tab-dropdown">
+        <a onclick="showPage('schedule')">Class Schedule</a>
+        <a onclick="showPage('corporate')">Corporate</a>
+        <a onclick="showPage('one-to-one')">One to One</a>
+      </div>
+    </div>
+
+    <a class="tab" data-page="retreats" onclick="showPage('retreats')">Retreats</a>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PANEL: Home — welcome on Mud + About
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="panel-home" class="panel visible">
+
+    <div class="welcome-section">
+      <img src="Mud.jpeg" alt="Nature" class="welcome-img">
+      <div class="welcome-overlay"></div>
+      <div class="welcome-text">
+        <p>Welcome to yoga with Tuula,
+           a space to quiet the mind and connect with oneself.</p>
+      </div>
+    </div>
+
+    <section id="about">
+      <h2 class="section-heading centred">About</h2>
+      <div class="about-body">
+        <div class="about-text">
+          <p>Yoga has been a source of grounding for Tuula since her teenage years, evolving into an essential practice that has supported her through all stages of life. Inspired by its capacity to shift and steady the mind, she undertook her first teacher training in Nepal in 2018, and has since deepened her practice through continued learning, including 4Beat training.</p>
+          <p>Tuula's classes cultivate a deep awareness of body and mind, guided by the breath as an anchor to the present moment. Drawing from vinyasa, ashtanga, and 4Beat, her teaching offers a dynamic, flowing practice interwoven with moments of stillness and restoration, leaving you both calm and revitalised.</p>
+        </div>
+        <img src="Headshot_1.JPG" alt="Tuula" class="about-photo">
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PANEL: Practice With Me
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="panel-practice" class="panel">
+    <section id="practice">
+
+      <div class="practice-header">
+        <h2 class="section-heading centred">Practice With Me</h2>
+      </div>
+
+      <!-- Schedule sub-section -->
+      <div id="schedule">
+        <div class="scene-bg"></div>
+        <div class="scene-overlay"></div>
+        <div class="scene-content">
+          <h3 class="section-heading light">Class Schedule</h3>
+          <p class="schedule-intro">Take time to move intentionally, flowing through a yoga sequence that cultivates awareness and steadiness of breath alongside fellow practitioners.</p>
+          <div class="schedule-grid">
+            <div class="schedule-col">
+              <h3>Monday</h3>
+              <div class="class-slot">
+                <div class="time">7:00 – 8:00 AM</div>
+                <div class="venue"><a href="https://www.mayastudios.co.uk/" target="_blank" rel="noopener">Alongside Six</a>, Angel</div>
+              </div>
+            </div>
+            <div class="schedule-col">
+              <h3>Wednesday</h3>
+              <div class="class-slot">
+                <div class="time">1:30 – 2:30 PM</div>
+                <div class="venue"><a href="https://maps.google.com/?q=Jean+Stokes+Community+Centre,+London" target="_blank" rel="noopener">Jean Stokes Community Centre</a></div>
+                <div class="free-note">Free class</div>
+              </div>
+            </div>
+            <div class="schedule-col">
+              <h3>Thursday</h3>
+              <div class="class-slot">
+                <div class="time">7:45 – 8:45 AM</div>
+                <div class="venue"><a href="https://www.mayastudios.co.uk/" target="_blank" rel="noopener">Alongside Six</a>, Angel</div>
+              </div>
+            </div>
+            <div class="schedule-col">
+              <h3>Friday</h3>
+              <div class="class-slot">
+                <div class="time">12:00 – 1:00 PM</div>
+                <div class="venue"><a href="https://www.mayastudios.co.uk/" target="_blank" rel="noopener">Alongside Six</a>, Angel</div>
+              </div>
+            </div>
+          </div>
+          <div class="cta-wrap">
+            <a href="mailto:tuula.petersen@gmail.com" class="cta light">Get In Touch</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corporate -->
+      <div class="practice-card card-corporate" id="corporate">
+        <div class="scene-bg"></div>
+        <div class="scene-overlay"></div>
+        <div class="card-body">
+          <h3>Corporate</h3>
+          <p>Having worked in a high-pressure transactional legal environment, Tuula recognises how easily self-care can be overlooked. She brings this understanding into her teaching, offering tailored yoga and meditation workshops that invite teams into moments of stillness, balance, and renewed energy.</p>
+          <a href="mailto:tuula.petersen@gmail.com" class="cta light">Get In Touch</a>
+        </div>
+      </div>
+
+      <!-- One to One -->
+      <div class="practice-card card-one-to-one" id="one-to-one">
+        <div class="scene-bg"></div>
+        <div class="scene-overlay"></div>
+        <div class="card-body">
+          <h3>One to One</h3>
+          <p>Explore your practice intently in personalised one-to-one sessions, where each class is carefully curated around your unique intentions. Whether refining postures, expanding your understanding, or carving out time for self-care, these sessions offer a space for focused growth and restoration.</p>
+          <a href="mailto:tuula.petersen@gmail.com" class="cta light">Get In Touch</a>
+        </div>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PANEL: Retreats
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="panel-retreats" class="panel">
+    <section class="coming-soon-section">
+      <div class="scene-bg" style="background-image: url('12_.png');"></div>
+      <div class="scene-overlay" style="background-color: rgba(30,18,8,0.52);"></div>
+      <div class="coming-soon-content">
+        <h2>Retreats</h2>
+        <p class="soon-label">Coming Soon</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER — always visible
+  ════════════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="scene-bg"></div>
+    <div class="scene-overlay"></div>
+    <div class="footer-body">
+      <div class="footer-brand">YOGA WITH TUULA</div>
+      <nav class="footer-nav">
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('about')">About</a>
+        <a onclick="showPage('practice')">Practice With Me</a>
+        <a onclick="showPage('retreats')">Retreats</a>
+      </nav>
+      <div class="footer-contact">
+        <a href="mailto:tuula.petersen@gmail.com">tuula.petersen@gmail.com</a>
+      </div>
+      <p class="footer-copy">© 2026 YOGA WITH TUULA</p>
+    </div>
+  </footer>
+
+  <script>
+    const panelMap = {
+      'home':          'panel-home',
+      'about':         'panel-home',
+      'schedule':      'panel-practice',
+      'practice':      'panel-practice',
+      'corporate':     'panel-practice',
+      'one-to-one':    'panel-practice',
+      'retreats':      'panel-retreats',
+    };
+
+    const scrollTargets = {
+      'about':      'about',
+      'schedule':   'schedule',
+      'corporate':  'corporate',
+      'one-to-one': 'one-to-one',
+    };
+
+    const activeTab = {
+      'home':          'home',
+      'about':         'about',
+      'schedule':      'practice',
+      'practice':      'practice',
+      'corporate':     'practice',
+      'one-to-one':    'practice',
+      'retreats':      'retreats',
+    };
+
+    function showPage(page) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+      const panelId = panelMap[page] || 'panel-home';
+      document.getElementById(panelId).classList.add('visible');
+
+      const activePage = activeTab[page] || page;
+      document.querySelectorAll('.tab[data-page]').forEach(t => {
+        t.classList.toggle('active', t.dataset.page === activePage);
+      });
+
+      const targetId = scrollTargets[page];
+      if (targetId) {
+        setTimeout(() => {
+          const el = document.getElementById(targetId);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      } else {
+        window.scrollTo({ top: 0 });
+      }
+    }
+
+    function openNav() {
+      document.getElementById('navOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+      document.getElementById('navOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function navTo(page) {
+      closeNav();
+      showPage(page);
+    }
+
+    document.getElementById('navOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeNav();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeNav();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <clipPath id="bound">
+      <circle cx="100" cy="100" r="85"/>
+    </clipPath>
+  </defs>
+
+  <!-- Flower of Life — 19 equal circles (r=27), clipped to outer boundary -->
+  <!-- All circles share the same radius; centres follow the hexagonal lattice  -->
+  <g clip-path="url(#bound)" fill="none" stroke="#4A1E08" stroke-width="0.85" opacity="0.9">
+
+    <!-- Centre -->
+    <circle cx="100"   cy="100"   r="27"/>
+
+    <!-- Ring 1 — 6 circles at distance 27, every 60° -->
+    <circle cx="127"   cy="100"   r="27"/>
+    <circle cx="113.5" cy="123.4" r="27"/>
+    <circle cx="86.5"  cy="123.4" r="27"/>
+    <circle cx="73"    cy="100"   r="27"/>
+    <circle cx="86.5"  cy="76.6"  r="27"/>
+    <circle cx="113.5" cy="76.6"  r="27"/>
+
+    <!-- Ring 2 — 6 circles at distance 27√3 ≈ 46.8, every 60° offset 30° -->
+    <circle cx="140.5" cy="123.4" r="27"/>
+    <circle cx="100"   cy="146.8" r="27"/>
+    <circle cx="59.5"  cy="123.4" r="27"/>
+    <circle cx="59.5"  cy="76.6"  r="27"/>
+    <circle cx="100"   cy="53.2"  r="27"/>
+    <circle cx="140.5" cy="76.6"  r="27"/>
+
+    <!-- Ring 3 — 6 circles at distance 54, every 60° -->
+    <circle cx="154"   cy="100"   r="27"/>
+    <circle cx="127"   cy="146.8" r="27"/>
+    <circle cx="73"    cy="146.8" r="27"/>
+    <circle cx="46"    cy="100"   r="27"/>
+    <circle cx="73"    cy="53.2"  r="27"/>
+    <circle cx="127"   cy="53.2"  r="27"/>
+
+  </g>
+
+  <!-- Outer bounding circle -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="#4A1E08" stroke-width="1.4"/>
+
+  <!-- Thin inner ring just inside boundary, echoing the drawing -->
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#4A1E08" stroke-width="0.5" opacity="0.45"/>
+</svg>
